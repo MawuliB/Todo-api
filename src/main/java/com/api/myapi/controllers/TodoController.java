@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import com.api.myapi.services.TodoService;
+import com.api.myapi.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,9 @@ import java.util.Optional;
 @RequestMapping(value = "/todos")
 public class TodoController {
     private final TodoRepository todoRepository;
+    private final TodoService todoService;
     private final Mapper<Todo, TodoDto> todoMapper;
+    private final UserService userService;
 
     public TodoController(TodoRepository todoRepository, Mapper<Todo, TodoDto> todoMapper) {
         this.todoRepository = todoRepository;
@@ -40,7 +44,7 @@ public class TodoController {
     @PostMapping("/create")
     public ResponseEntity<TodoDto> createTodo(@RequestBody TodoDto todo) {
         Todo todoEntity = todoMapper.mapFrom(todo);
-        Todo savedTodo = this.todoRepository.save(todoEntity);
+        Todo savedTodo = this.todoService.createTodo(todoEntity);
         return new ResponseEntity<>(todoMapper.mapTo(savedTodo), HttpStatus.CREATED);
     }
 
