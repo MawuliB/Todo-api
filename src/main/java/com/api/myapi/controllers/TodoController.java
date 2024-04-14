@@ -23,9 +23,11 @@ public class TodoController {
     private final Mapper<Todo, TodoDto> todoMapper;
     private final UserService userService;
 
-    public TodoController(TodoRepository todoRepository, Mapper<Todo, TodoDto> todoMapper) {
+    public TodoController(TodoRepository todoRepository, Mapper<Todo, TodoDto> todoMapper, UserService userService, TodoService todoService) {
         this.todoRepository = todoRepository;
         this.todoMapper = todoMapper;
+        this.userService = userService;
+        this.todoService = todoService;
     }
 
     @GetMapping("all")
