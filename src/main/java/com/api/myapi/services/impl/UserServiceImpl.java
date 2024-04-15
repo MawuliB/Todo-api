@@ -5,6 +5,9 @@ import com.api.myapi.repositories.UserRepository;
 import com.api.myapi.services.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -20,17 +23,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(int id) {
-        return null;
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public User updateUser(User user) {
-        return null;
+    public User updateUser(User user, Long id) {
+        user.setUser_id(id);
+        return userRepository.save(user);
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
 
     }
 
@@ -45,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getAllUsers() {
-        return null;
+    public List<User> getAllUsers() {
+        return StreamSupport.stream(userRepository.findAll().spliterator(), false).toList();
     }
 }
