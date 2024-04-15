@@ -60,11 +60,11 @@ public class UserController {
         return userMapper.mapTo(this.userService.updateUser(userEntity, id));
     }
 
-//    @DeleteMapping("/delete/{id}")
-//    public void deleteUserById(@PathVariable(name = "id") Long id) {
-//        if (this.userService.findById(id).isEmpty()) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with id %d not found", id));
-//        }
-//        this.userService.deleteById(id);
-//    }
+    @DeleteMapping("/delete/{id}")
+    public void deleteUserById(@PathVariable(name = "id") Long id) {
+        if (this.userService.getUserById(id) == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with id %d not found", id));
+        }
+        this.userService.deleteUser(id);
+    }
 }

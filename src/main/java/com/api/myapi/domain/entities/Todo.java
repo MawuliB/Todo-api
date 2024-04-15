@@ -8,6 +8,7 @@ import lombok.Setter;
 @Table(name = "TodoDB")
 public class Todo {
     @Getter
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tododb_seq")
     @SequenceGenerator(name = "tododb_seq", sequenceName = "TODODB_SEQ", allocationSize = 1)

@@ -30,7 +30,7 @@ public class TodoController {
     }
 
     @GetMapping("/get/{id}")
-    public Optional<TodoDto> getTodoById(@PathVariable("id") Integer id) {
+    public Optional<TodoDto> getTodoById(@PathVariable("id") Long id) {
         if(this.todoService.getTodoById(id) == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Todo with id %d not found", id));
         }
@@ -44,30 +44,26 @@ public class TodoController {
         return new ResponseEntity<>(todoMapper.mapTo(savedTodo), HttpStatus.CREATED);
     }
 
-//    @PutMapping("/update/{id}")
-//    public Todo updateTodoById(@PathVariable("id") Integer id, @RequestBody Todo todo) {
-//        try {
-//            if (this.todoService.findById(id).isEmpty()) {
-//                throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Todo with id %d not found", id));
-//            }
-//            todo.setId(id);
-//            return this.todoService.save(todo);
-//        }catch (Exception e){
-//            return null;
-//        }
-//    }
-//
-//    @DeleteMapping("/delete/{id}")
-//    public void deleteTodoById(@PathVariable("id") Integer id) {
-////        Optional<TodoDB> u = this.todoService.findById(id);
-////        TodoDB t = u.get();
-////        t.setDescription(t.getDescription());
-//        if (this.todoService.findById(id).isEmpty()) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Todo with id %d not found", id));
-//        }
-//        this.todoService.deleteById(id);
-//    }
-//
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Todo> updateTodoById(@PathVariable("id") Long id, @RequestBody Todo todo) {
+            if (this.todoService.getTodoById(id) == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(this.todoService.updateTodo(todo, id), HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteTodoById(@PathVariable("id") Long id) {
+//        Optional<TodoDB> u = this.todoService.findById(id);
+//        TodoDB t = u.get();
+//        t.setDescription(t.getDescription());
+        if (this.todoService.getTodoById(id) == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Todo with id %d not found", id));
+        }
+        this.todoService.deleteTodoById(id);
+    }
+
 //    @GetMapping("/done/{done}")
 //    public List<Todo> getTodosByDone(@PathVariable("done") boolean done) {
 //        return this.todoService.findByDone(done);

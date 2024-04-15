@@ -40,18 +40,19 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public Todo getTodoById(int id) {
-        return todoRepository.findById(id).orElse(null);
+    public Todo getTodoById(Long id) {
+        return todoRepository.findById(Math.toIntExact(id)).orElse(null);
     }
 
     @Override
-    public Todo updateTodo(Todo todo) {
-        return null;
+    public Todo updateTodo(Todo todo, Long id) {
+        todo.setId(Math.toIntExact(id));
+        return todoRepository.save(todo);
     }
 
     @Override
-    public void deleteTodoById(int id) {
-
+    public void deleteTodoById(Long id) {
+        todoRepository.deleteById(Math.toIntExact(id));
     }
 
     @Override
